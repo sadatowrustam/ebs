@@ -1,0 +1,2127 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    Success200:
+      description: Login successful
+      content:
+        application/json:
+          example:
+            {
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTQxMDgzLCJleHAiOjE3MTE2Mjc0ODN9.D_EwAeB8ir5rjLA2O78v2XW-RZm_PfuoZkDY8onvkNU",
+              data: {
+                admin: {
+                  "id": 1,
+                  "username": "admin",
+                  "email": "hydyrowayhan7@gmail.com",
+                  "createdAt": "2024-03-27T12:00:42.464Z",
+                  "updatedAt": "2024-03-27T12:00:42.464Z"
+                }
+              }
+            }
+    Error400:
+      description: Bad request
+      content:
+        application/json:
+          example:
+            statusCode: 400
+            message: Unexpected token } in JSON at position 54
+            error: "Bad Request"
+
+    Error401:
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            statusCode: 401
+            message: Unauthorized
+    Forbidden403:
+      description: Authentication failure
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error message
+                example: "Credentials incorrect"
+              error:
+                type: string
+                description: Error code
+                example: "Forbidden"
+              statusCode:
+                type: integer
+                description: HTTP status code
+                example: 403
+    Error404:
+      description: Not found
+      content:
+        application/json:
+          example:
+            statusCode: 404
+            message: Not found
+    Error500:
+      description: Internal server error
+      content:
+        application/json:
+          example:
+            statusCode: 500,
+            message: Internal server error
+
+tags:
+  - name: Admin
+  - name: Banners
+  - name: Categories
+  - name: Subcategories
+  - name: Brands
+  - name: Services
+  - name: Sizes
+  - name: Products
+paths:
+  /api/admin/login:
+    post:
+      summary: Login user
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "admin"
+                password:
+                  type: string
+                  description: A detailed description of the entity.
+                  example: "admin"
+      responses:
+        200:
+          $ref: "#/components/responses/Success200"
+        403:
+          $ref: "#/components/responses/Forbidden403"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin:
+    get:
+      tags: [Admin]
+      security: 
+        - bearerAuth: []
+      summary: Get admins data
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": 1,
+                  "username": "admin",
+                  "email": "hydyrowayhan7@gmail.com",
+                  "createdAt": "2024-03-27T12:00:42.464Z",
+                  "updatedAt": "2024-03-27T12:00:42.464Z"
+                }
+    patch:
+      tags: [Admin]
+      security: 
+        - bearerAuth: []
+      summary: Update an admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "admin"
+                password:
+                  type: string
+                  description: A detailed description of the entity.
+                  example: "admin"
+        responses:
+          200:
+            $ref: "#/components/responses/Success200"
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+  /api/admin/upload-image:
+    post:
+      tags: [Admin,Categories,Banners,Brands,ServiceCategories,Services,News]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+                  description: Image file to upload.  
+      responses:
+        201:
+          content:
+            application/json:
+              example: Image.webp
+        500:
+          $ref: "#/components/responses/Error500"    
+  /api/admin/banners:
+    get:
+      tags: [Banners]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "count": 2,
+                    "rows": [
+                      {
+                        "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                        "link": "https://geekspace.dev",
+                        "image_tm": null,
+                        "image_ru": null,
+                        "createdAt": "2024-03-28T09:12:58.587Z",
+                        "updatedAt": "2024-03-28T09:12:58.587Z"
+                      },
+                      {
+                        "id": "6f836324-5522-4e78-93d0-c55d0fe0949b",
+                        "link": "https://geekspace.dev",
+                        "image_tm": null,
+                        "image_ru": null,
+                        "createdAt": "2024-03-28T09:10:58.132Z",
+                        "updatedAt": "2024-03-28T09:10:58.132Z"
+                      }
+                    ]
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Banners]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                link:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "https://geekspace.dev"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:  
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "link": "https://geekspace.dev",
+                  "updatedAt": "2024-03-28T09:12:58.587Z",
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "image": 0ab9e247-1038-4716-a3bb-7cd795901358.webp,
+                }
+  /api/admin/banners/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the tip.
+      tags: [Banners]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "link": "https://geekspace.de1v",
+                  "image_tm": null,
+                  "image_ru": null,
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Unique identifier for the banner.
+      tags: [Banners]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                link:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "https://geekspace.dev"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "link": "https://geekspace.de1v",
+                  "image_tm": null,
+                  "image_ru": null,
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                }      
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Unique identifier for the banner.
+      tags: [Banners]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+
+  /api/admin/categories:
+    get:
+      tags: [Categories]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  [
+                    {
+                      "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:43:47.750Z",
+                      "updatedAt": "2024-03-28T11:43:47.750Z"
+                    },
+                    {
+                      "id": "fc646a9d-0183-4ead-8849-24ee6632729b",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:42:18.505Z",
+                      "updatedAt": "2024-03-28T11:42:18.505Z"
+                    }
+                  ]
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Categories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Mashyn"
+                name_ru:
+                  type: string
+                  example: "Rusca mashyn"
+                name_en:
+                  type: string
+                  example: "Rusca mashyn"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "name_tm": "category",
+                  "name_ru": "vategroy ru",
+                  "image:": "0ab9e247-1038-4716-a3bb-7cd795901358.webp",
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                } 
+  /api/admin/categories/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the category.
+      tags: [Categories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                  "subcategories": []
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Categories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "Nunnun"
+                name_ru:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "Nunnun rusca"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Nunnun",
+                  "name_ru": "Nunnun rusca",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Categories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/subcategories/add:
+    post:
+      tags: [Subcategories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Mashyn"
+                name_ru:
+                  type: string
+                  example: "Rusca mashyn"
+                name_en:
+                  type: string
+                  example: "Rusca mashyn"
+                categoryId:
+                  type: string
+                  example: "954ea91e-6870-4384-8c54-22f73838b0b0"
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "name_tm": "category",
+                  "name_ru": "vategroy ru",
+                  "name_en:": "0ab9e247-1038-4716-a3bb-7cd795901358.webp",
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                } 
+  /api/admin/subcategories/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the category.
+      tags: [Subcategories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Subcategories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "Nunnun"
+                name_ru:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "Nunnun rusca"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Nunnun",
+                  "name_ru": "Nunnun rusca",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Subcategories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/brands:
+    get:
+      tags: [Brands]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+            
+    post:
+      tags: [Brands]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Mashyn"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example:
+                {
+                  "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                  "name": "Mashyn",
+                  "image": 0ab9e247-1038-4716-a3bb-7cd795901358.webp,
+                  "createdAt": "2024-04-01T10:01:34.136Z",
+                  "updatedAt": "2024-04-01T10:01:34.136Z"
+                }
+        401:
+          $ref: "#/components/responses/Error401"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin/brands/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Brands]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Brands]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Nunnun"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name": "Brand",
+                  "image": "images.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Brands]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/sizes:
+    get:
+      tags: [Sizes]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": 1,
+                        "size": "3XL",
+                        "createdAt": "2024-04-01T12:38:04.783Z",
+                        "updatedAt": "2024-04-01T12:38:04.783Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Sizes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                size:
+                  type: string
+                  example: "3XL"
+                categoryId:
+                  type: string
+                  example: "954ea91e-6870-4384-8c54-22f73838b0b0"
+
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "name_tm": "category",
+                  "name_ru": "vategroy ru",
+                  "image:": "0ab9e247-1038-4716-a3bb-7cd795901358.webp",
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                }
+  /api/admin/sizes/{id}:
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Sizes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "28XL"
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "1",
+                  "size": "28XL",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Sizes]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/colors:
+    get:
+      tags: [Colors]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": 1,
+                        "hex": "#FFF",
+                        "createdAt": "2024-04-01T12:38:04.783Z",
+                        "updatedAt": "2024-04-01T12:38:04.783Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+  /api/admin/colors/add:
+    post:
+      tags: [Colors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hex:
+                  type: string
+                  example: "#FFF"
+
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "1",
+                  "hex": "#000",
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                }
+  /api/admin/colors/{id}:
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Colors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hex:
+                  type: string
+                  example: "#123"
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "1",
+                  "hex": "#252",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Colors]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/products:
+    get:
+      tags: [Products]
+      parameters:
+        - name: limit
+          type: integer
+          in: query
+        - name: offset
+          type: integer
+          in: query
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "1",
+                  "size": "28XL",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }  
+  /api/admin/products/add: 
+    post:
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Sowgat"
+                name_ru:
+                  type: string
+                  example: Padarke
+                name_en:
+                  type: string
+                  example: Padarke
+                body_tm:
+                  type: string
+                  example: "Sowgat body"
+                body_ru:
+                  type: string
+                  example: Padarke body
+                body_en:
+                  type: string
+                  example: Padarke body
+                categoryId:
+                  type: string
+                  example: dd36293f-22a4-4538-bb95-01cc76be3bde
+                price:
+                  type: integer
+                  example: 250
+                discount:
+                  type: integer
+                  example: 0
+                product_code:
+                  type: string
+                  example: "fiu43o"
+                images:
+                  type: array
+                  items: 
+                    type: string
+                    example: "c8ac07f3-5289-4e6f-8613-3b6343d64a4a"
+                colors:
+                  type: array
+                  items: 
+                    type: integer
+                    example: 6
+                sizes:
+                  type: array
+                  items: 
+                    type: string
+                    example: 3
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "2d63039b-8633-488a-9ab6-0de351a4a1ff",
+                  "isNew": true,
+                  "rating": 0,
+                  "rating_count": 0,
+                  "name_tm": "Sowgat",
+                  "name_ru": "Padarke",
+                  "body_tm": "Sowgat body",
+                  "body_ru": "Padarke body",
+                  "categoryId": "dd36293f-22a4-4538-bb95-01cc76be3bde",
+                  "price": 250,
+                  "discount": 0,
+                  "product_code": "fiu43o",
+                  "is_new_expire": "1712058114377",
+                  "isActive": true,
+                  "updatedAt": "2024-04-02T11:41:54.378Z",
+                  "createdAt": "2024-04-02T11:41:54.378Z",
+                  "price_old": null
+                }
+  /api/admin/multiple-image:
+    post:
+      tags: [Products,Services]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+                  description: Image file to upload.  
+      responses:
+        201:
+          content:
+            application/json:
+              example: ["Image.wbp"]
+        500:
+          $ref: "#/components/responses/Error500"    
+      
+  /api/admin/products/add/color: 
+    post:
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "2d63039b-8633-488a-9ab6-0de351a4a1ff"
+                colors:
+                  type: array
+                  items: 
+                    type: integer
+                    example: [1]
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "2d63039b-8633-488a-9ab6-0de351a4a1ff",
+                  "isNew": true,
+                  "rating": 0,
+                  "rating_count": 0,
+                  "name_tm": "Sowgat",
+                  "name_ru": "Padarke",
+                  "body_tm": "Sowgat body",
+                  "body_ru": "Padarke body",
+                  "categoryId": "dd36293f-22a4-4538-bb95-01cc76be3bde",
+                  "price": 250,
+                  "discount": 0,
+                  "product_code": "fiu43o",
+                  "is_new_expire": "1712058114377",
+                  "isActive": true,
+                  "updatedAt": "2024-04-02T11:41:54.378Z",
+                  "createdAt": "2024-04-02T11:41:54.378Z",
+                  "price_old": null
+                }
+  /api/admin/products/add/size: 
+    post:
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "2d63039b-8633-488a-9ab6-0de351a4a1ff"
+                sizes:
+                  type: array
+                  items: 
+                    type: integer
+                    example: [1]
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "2d63039b-8633-488a-9ab6-0de351a4a1ff",
+                  "isNew": true,
+                  "rating": 0,
+                  "rating_count": 0,
+                  "name_tm": "Sowgat",
+                  "name_ru": "Padarke",
+                  "body_tm": "Sowgat body",
+                  "body_ru": "Padarke body",
+                  "categoryId": "dd36293f-22a4-4538-bb95-01cc76be3bde",
+                  "price": 250,
+                  "discount": 0,
+                  "product_code": "fiu43o",
+                  "is_new_expire": "1712058114377",
+                  "isActive": true,
+                  "updatedAt": "2024-04-02T11:41:54.378Z",
+                  "createdAt": "2024-04-02T11:41:54.378Z",
+                  "price_old": null
+                }
+  /api/admin/products/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Products]
+      responses:
+        200:
+          content:
+              application/json:
+                example: 
+                  {
+                    "id": "6e1ae05a-0b32-4f44-b3a5-8875661fd04e",
+                    "name_tm": "Sowgat",
+                    "name_ru": "Padarke",
+                    "body_tm": "Sowgat body",
+                    "body_ru": "Padarke body",
+                    "product_code": "fiu43o",
+                    "price": 250,
+                    "price_old": null,
+                    "discount": 0,
+                    "isActive": true,
+                    "isNew": true,
+                    "rating": 0,
+                    "rating_count": 0,
+                    "is_new_expire": "1712137426547",
+                    "categoryId": "3715bd92-91c8-4164-9fd5-0e0cc911040b",
+                    "createdAt": "2024-04-03T09:43:46.547Z",
+                    "updatedAt": "2024-04-03T09:43:46.547Z",
+                    "images": [],
+                    "category": {
+                      "id": "3715bd92-91c8-4164-9fd5-0e0cc911040b",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "name_en": "A Car",
+                      "image": "0ab9e247-1038-4716-a3bb-7cd795901358.webp",
+                      "createdAt": "2024-04-03T09:43:25.663Z",
+                      "updatedAt": "2024-04-03T09:43:25.663Z"
+                    }
+                  }
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Sowgat"
+                name_ru:
+                  type: string
+                  example: Padarke
+                name_en:
+                  type: string
+                  example: Padarke
+                body_tm:
+                  type: string
+                  example: "Sowgat body"
+                body_ru:
+                  type: string
+                  example: Padarke body
+                body_en:
+                  type: string
+                  example: Padarke body
+                categoryId:
+                  type: string
+                  example: dd36293f-22a4-4538-bb95-01cc76be3bde
+                price:
+                  type: integer
+                  example: 250
+                discount:
+                  type: integer
+                  example: 0
+                product_code:
+                  type: string
+                  example: "fiu43o"
+                images:
+                  type: array
+                  items: 
+                    type: string
+                    example: "c8ac07f3-5289-4e6f-8613-3b6343d64a4a"
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "2d63039b-8633-488a-9ab6-0de351a4a1ff",
+                  "isNew": true,
+                  "rating": 0,
+                  "rating_count": 0,
+                  "name_tm": "Sowgat",
+                  "name_ru": "Padarke",
+                  "body_tm": "Sowgat body",
+                  "body_ru": "Padarke body",
+                  "categoryId": "dd36293f-22a4-4538-bb95-01cc76be3bde",
+                  "price": 250,
+                  "discount": 0,
+                  "product_code": "fiu43o",
+                  "is_new_expire": "1712058114377",
+                  "isActive": true,
+                  "updatedAt": "2024-04-02T11:41:54.378Z",
+                  "createdAt": "2024-04-02T11:41:54.378Z",
+                  "price_old": null
+                }
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Unique identifier for the product.
+      tags: [Products]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/products/image/{id}:
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Unique identifier for the image.
+      tags: [Products]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/service-categories:
+    get:
+      tags: [ServiceCategories]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  [
+                    {
+                      "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:43:47.750Z",
+                      "updatedAt": "2024-03-28T11:43:47.750Z"
+                    },
+                    {
+                      "id": "fc646a9d-0183-4ead-8849-24ee6632729b",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:42:18.505Z",
+                      "updatedAt": "2024-03-28T11:42:18.505Z"
+                    }
+                  ]
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [ServiceCategories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Mashyn"
+                name_ru:
+                  type: string
+                  example: "Rusca mashyn"
+                name_en:
+                  type: string
+                  example: "Rusca mashyn"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                  "name_tm": "category",
+                  "name_ru": "vategroy ru",
+                  "image:": "0ab9e247-1038-4716-a3bb-7cd795901358.webp",
+                  "createdAt": "2024-03-28T09:12:58.587Z",
+                  "updatedAt": "2024-03-28T11:03:57.555Z"
+                } 
+  /api/admin/service-categories/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the category.
+      tags: [ServiceCategories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [ServiceCategories]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "Nunnun"
+                name_ru:
+                  type: string
+                  description: The name of the entity you want to work with.
+                  example: "Nunnun rusca"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Nunnun",
+                  "name_ru": "Nunnun rusca",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [ServiceCategories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/services:
+    get:
+      tags: [Services]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name_tm": "Mashyn",
+                        "name_en": "Car",
+                        "name_ru": "Mashina",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Services]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Mashyn kraska"
+                name_ru:
+                  type: string
+                  example: "Mashyn kraska ru"
+                name_en:
+                  type: string
+                  example: "Mashyn kraska en"
+                body_tm:
+                  type: string
+                  example: "Mashyn kraska"
+                body_ru:
+                  type: string
+                  example: "Mashyn kraska ru"
+                body_en:
+                  type: string
+                  example: "Mashyn kraska en"
+                servicecategoryId:
+                  type: integer
+                  example: 1
+                images:
+                  type: string
+                  example: [0ab9e247-1038-4716-a3bb-7cd795901358]
+                price:
+                  type: integer
+                  example: 50
+                options:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      price:
+                        type: integer
+                        example: 50
+                      quantity:
+                        type: integer
+                        example: 10
+      responses:
+        201:
+          content:
+            application/json:
+              example:
+                {
+                  "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                  "name_tm": "Mashyn",
+                  "name_en": "Car",
+                  "name_ru": "Mashina",
+                  "image": null,
+                  "createdAt": "2024-04-01T10:01:34.136Z",
+                  "updatedAt": "2024-04-01T10:01:34.136Z"
+                }
+        401:
+          $ref: "#/components/responses/Error401"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin/services/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Services]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Services]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Mashyn kraska"
+                name_ru:
+                  type: string
+                  example: "Mashyn kraska ru"
+                name_en:
+                  type: string
+                  example: "Mashyn kraska en"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+                options:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      price:
+                        type: integer
+                        example: 50
+                      quantity:
+                        type: integer
+                        example: 10
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name": "Brand",
+                  "image": "images.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Services]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/news:
+    get:
+      tags: [News]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [News]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                header_tm:
+                  type: string
+                  example: "Nunnun"
+                header_ru:
+                  type: string
+                  example: "Nunnun"
+                header_en:
+                  type: string
+                  example: "Nunnun"
+                body_tm:
+                  type: string
+                  example: "Nunnun"
+                body_ru:
+                  type: string
+                  example: "Nunnun"
+                body_en:
+                  type: string
+                  example: "Nunnun"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example:
+                {
+                  "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                  "name": "Mashyn",
+                  "image": 0ab9e247-1038-4716-a3bb-7cd795901358.webp,
+                  "createdAt": "2024-04-01T10:01:34.136Z",
+                  "updatedAt": "2024-04-01T10:01:34.136Z"
+                }
+        401:
+          $ref: "#/components/responses/Error401"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin/news/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [News]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [News]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                header_tm:
+                  type: string
+                  example: "Nunnun"
+                header_ru:
+                  type: string
+                  example: "Nunnun"
+                header_en:
+                  type: string
+                  example: "Nunnun"
+                body_tm:
+                  type: string
+                  example: "Nunnun"
+                body_ru:
+                  type: string
+                  example: "Nunnun"
+                body_en:
+                  type: string
+                  example: "Nunnun"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name": "Brand",
+                  "image": "images.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [News]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/awards:
+    get:
+      tags: [Awards]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Awards]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Nunnun"
+                name_ru:
+                  type: string
+                  example: "Nunnun"
+                name_en:
+                  type: string
+                  example: "Nunnun"
+                body_tm:
+                  type: string
+                  example: "Nunnun"
+                body_ru:
+                  type: string
+                  example: "Nunnun"
+                body_en:
+                  type: string
+                  example: "Nunnun"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example:
+                {
+                  "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                  "name": "Mashyn",
+                  "image": 0ab9e247-1038-4716-a3bb-7cd795901358.webp,
+                  "createdAt": "2024-04-01T10:01:34.136Z",
+                  "updatedAt": "2024-04-01T10:01:34.136Z"
+                }
+        401:
+          $ref: "#/components/responses/Error401"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin/awards/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Awards]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Awards]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_tm:
+                  type: string
+                  example: "Nunnun"
+                name_ru:
+                  type: string
+                  example: "Nunnun"
+                name_en:
+                  type: string
+                  example: "Nunnun"
+                body_tm:
+                  type: string
+                  example: "Nunnun"
+                body_ru:
+                  type: string
+                  example: "Nunnun"
+                body_en:
+                  type: string
+                  example: "Nunnun"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name": "Brand",
+                  "image": "images.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Awards]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/workers:
+    get:
+      tags: [Workers]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Workers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Myrat"
+                job:
+                  type: string
+                  example: "Ohrana"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example:
+                {
+                  "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                  "name": "Mashyn",
+                  "image": 0ab9e247-1038-4716-a3bb-7cd795901358.webp,
+                  "createdAt": "2024-04-01T10:01:34.136Z",
+                  "updatedAt": "2024-04-01T10:01:34.136Z"
+                }
+        401:
+          $ref: "#/components/responses/Error401"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin/workers/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Workers]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "8",
+                  "name": "Mashyn",
+                  "job": "Ohrana",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Workers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Ilya"
+                job:
+                  type: string
+                  example: "Glawa"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name": "Brand",
+                  "image": "images.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Workers]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/achievements:
+    get:
+      tags: [Achievements]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+          401:
+            $ref: "#/components/responses/Error401"
+          500:
+            $ref: "#/components/responses/Error500"
+    post:
+      tags: [Achievements]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: string
+                  example: 100
+                title_tm:
+                  type: string
+                  example: "Gornushde"
+                title_ru:
+                  type: string
+                  example: "Gornushde ru"
+                title_en:
+                  type: string
+                  example: "Gornushde en"
+                body_tm:
+                  type: string
+                  example: "body"
+                body_ru:
+                  type: string
+                  example: "body ru"
+                body_en:
+                  type: string
+                  example: "body en"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        201:
+          content:
+            application/json:
+              example:
+                {
+                  "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                  "name": "Mashyn",
+                  "image": 0ab9e247-1038-4716-a3bb-7cd795901358.webp,
+                  "createdAt": "2024-04-01T10:01:34.136Z",
+                  "updatedAt": "2024-04-01T10:01:34.136Z"
+                }
+        401:
+          $ref: "#/components/responses/Error401"
+        500:
+          $ref: "#/components/responses/Error500"
+  /api/admin/achievements/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Achievements]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "8",
+                  "name": "Mashyn",
+                  "job": "Ohrana",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+        404:
+          $ref: "#/components/responses/Error404"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Achievements]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Ilya"
+                job:
+                  type: string
+                  example: "Glawa"
+                image:
+                  type: string
+                  example: 0ab9e247-1038-4716-a3bb-7cd795901358.webp
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name": "Brand",
+                  "image": "images.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T12:40:46.964Z"
+                }   
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [Achievements]
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucessfully deleted
+  /api/admin/orders:
+    get:
+      tags: [Orders]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                } 
+  /api/admin/orders/{id}:
+    get:
+      tags: [Orders]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }       
+
+
+                  

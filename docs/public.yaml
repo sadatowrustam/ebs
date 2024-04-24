@@ -1,0 +1,531 @@
+tags:
+  - name: Banners
+  - name: News
+  - name: Achievements
+  - name: Categories
+  - name: Subcategories
+  - name: Brands
+  - name: ServiceCategories
+  - name: Services
+  - name: Sizes
+  - name: Products
+paths:
+  /api/public/banners:
+    get:
+      tags: [Banners]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "count": 2,
+                    "rows": [
+                      {
+                        "id": "90a059b7-5643-4895-ac19-169abb63e837",
+                        "link": "https://geekspace.dev",
+                        "image_tm": null,
+                        "image_ru": null,
+                        "createdAt": "2024-03-28T09:12:58.587Z",
+                        "updatedAt": "2024-03-28T09:12:58.587Z"
+                      },
+                      {
+                        "id": "6f836324-5522-4e78-93d0-c55d0fe0949b",
+                        "link": "https://geekspace.dev",
+                        "image_tm": null,
+                        "image_ru": null,
+                        "createdAt": "2024-03-28T09:10:58.132Z",
+                        "updatedAt": "2024-03-28T09:10:58.132Z"
+                      }
+                    ]
+                  }
+  /api/public/news:
+    get:
+      tags: [News]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+  /api/admin/news/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      tags: [News]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/achievements:
+    get:
+      tags: [Achievements]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+  /api/public/categories:
+    get:
+      tags: [Categories]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  [
+                    {
+                      "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:43:47.750Z",
+                      "updatedAt": "2024-03-28T11:43:47.750Z"
+                    },
+                    {
+                      "id": "fc646a9d-0183-4ead-8849-24ee6632729b",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:42:18.505Z",
+                      "updatedAt": "2024-03-28T11:42:18.505Z"
+                    }
+                  ]
+  /api/public/categories/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the category.
+      tags: [Categories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                  "subcategories": []
+                }
+  /api/public/subcategories/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the subcategory.
+      tags: [Subcategories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/brands:
+    get:
+      tags: [Brands]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+  /api/public/brands/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the brand.
+      tags: [Brands]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/service-categories:
+    get:
+      tags: [ServiceCategories]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  [
+                    {
+                      "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:43:47.750Z",
+                      "updatedAt": "2024-03-28T11:43:47.750Z"
+                    },
+                    {
+                      "id": "fc646a9d-0183-4ead-8849-24ee6632729b",
+                      "name_tm": "Mashyn",
+                      "name_ru": "Rusca mashyn",
+                      "createdAt": "2024-03-28T11:42:18.505Z",
+                      "updatedAt": "2024-03-28T11:42:18.505Z"
+                    }
+                  ]
+  /api/public/service-categories/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the category.
+      tags: [ServiceCategories]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/service/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Services]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/service/comment:
+    post:
+      tags: [Services]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "David dante"
+                email:
+                  type: string
+                  example: "monet@gmail.com"
+                phone_number:
+                  type: string
+                  example: "+99363123456" 
+                comment:
+                  type: string
+                  example: "Bet eken"
+                serviceId:
+                  type: string
+                  exmaple: "faef51c7-8cdf-464a-8f0c-8b6751d1f16f"
+                
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/service/comments/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+      tags: [Services]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "image":"image.webp",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/sizes:
+    get:
+      tags: [Sizes]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+  /api/public/products:
+    get:
+      tags: [Products]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+  /api/public/products/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the brand.
+      tags: [Products]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }
+  /api/public/products/comment:
+    post:
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "David dante"
+                email:
+                  type: string
+                  example: "monet@gmail.com"
+                phone_number:
+                  type: string
+                  example: "+99363123456" 
+                comment:
+                  type: string
+                  example: "Bet eken"
+                productId:
+                  type: string
+                  exmaple: "faef51c7-8cdf-464a-8f0c-8b6751d1f16f"
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                }   
+  /api/public/products/comments/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the brand.
+      tags: [Products]
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                } 
+  /api/public/orders/add:
+    post:
+      tags: [Orders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: string
+                        example: "156dsw"
+                      quantity:
+                        type: integer
+                        example: 10
+                      sizeId:
+                        type: string
+                        example: "some string"
+                      colorId:
+                        type: string
+                        example: "some string"
+                      serviceId:
+                        type: string
+                        example: "ikisinin brini ugrat"
+                user_name: 
+                  type: string  
+                  example: "John Doe"
+                user_phone:
+                  type: string
+                  example: "+994654456"
+                address:
+                  type: string
+                  example: "Koytendag"
+                type:
+                  type: string
+                  example: "product"
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                  "name_tm": "Mashyn",
+                  "name_ru": "Rusca mashyn",
+                  "createdAt": "2024-03-28T11:43:47.750Z",
+                  "updatedAt": "2024-03-28T11:43:47.750Z",
+                } 
+  /api/public/workers:
+    get:
+      tags: [AboutUs]
+      responses:
+          200:
+            content:
+              application/json:
+                example:
+                  {
+                    "data": [
+                      {
+                        "id": "f95085c6-8f74-4d41-b3e0-90fc7d831f6f",
+                        "name": "Mashyn",
+                        "image": null,
+                        "createdAt": "2024-04-01T10:01:34.136Z",
+                        "updatedAt": "2024-04-01T10:01:34.136Z"
+                      }
+                    ],
+                    "count": 1
+                  }
+
+      
+        
