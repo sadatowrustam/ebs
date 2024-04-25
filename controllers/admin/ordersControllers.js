@@ -231,12 +231,9 @@ exports.changeOrderStatus = catchAsync(async(req, res, next) => {
     if (req.body.status == "canceled") {
         for (var i = 0; i < order.order_products.length; i++) {
             const product = await Products.findOne({
-                where: { product_id: order.order_products[i].productId },
+                where: { id: order.order_products[i].productId },
             });
-            const stock = await Stock.findOne({ where: { productId: product.id } });
-            await stock.update({
-                stock_quantity: stock.stock_quantity + order.order_products[i].quantity,
-            });
+            await product.update({stock:product.stock+order.order_products[i].quantity})
         }
     }
     await order.update({
@@ -300,7 +297,7 @@ exports.editProduct = catchAsync(async(req, res, next) => {
     return res.status(200).send({ order, order_product })
 })
 exports.deleteOrder = catchAsync(async(req, res, next) => {
-    const order = await Orders.findOne({ where: { order_id: req.params.id } })
+    const order = await Orders.findOne({ where: { id: req.params.id } })
     const order_products = await Orderproducts.findOne({ where: { orderId: order.id } })
     for (let i = 0; i < order_products.length; i++) {
         await order_products[i].destroy()
