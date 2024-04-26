@@ -31,4 +31,5 @@ router.use("/clients",require("./routes/clientsRouter"))
 router.use("/workers",require("./routes/workersRouter"))
 router.use("/achievements",require("./routes/achievementsRouter"))
 router.use("/mails",require("./routes/mailsRouter"))
+router.use("/comments",require("./routes/commentsRouter"))
 module.exports = router

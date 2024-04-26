@@ -2122,6 +2122,36 @@ paths:
                   "createdAt": "2024-03-28T11:43:47.750Z",
                   "updatedAt": "2024-03-28T11:43:47.750Z",
                 }       
+  /api/admin/orders/status/{id}:
+    post:
+        parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+        tags: [Orders]
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Kabul edildi"
+ 
+        responses:
+          200:
+            content:
+              application/json:
+                example: 
+                  {
+                    "id": "ed72e9d0-bc6a-43d6-8869-2d3dae122dda",
+                    "name": "Brand",
+                    "image": "images.webp",
+                    "createdAt": "2024-03-28T11:43:47.750Z",
+                    "updatedAt": "2024-03-28T12:40:46.964Z"
+                  }   
 
-
-                  
+                    

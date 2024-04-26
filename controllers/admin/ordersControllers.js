@@ -87,7 +87,6 @@ exports.getOrderProducts = catchAsync(async(req, res, next) => {
             });
         }
         else{
-            console.log(90)
             var product=await Services.findOne({
                 where: { id: order.order_products[i].serviceId },
                 include: [
@@ -209,7 +208,7 @@ exports.getOrdersByNumber = catchAsync(async(req, res, next) => {
 exports.changeOrderStatus = catchAsync(async(req, res, next) => {
     const order = await Orders.findOne({
         where: {
-            order_id: req.params.id,
+            id: req.params.id,
         },
         include: {
             model: Orderproducts,
@@ -219,14 +218,6 @@ exports.changeOrderStatus = catchAsync(async(req, res, next) => {
 
     if (!order) {
         return next(new AppError('Order did not found with that ID', 404));
-    }
-    if (req.body.status = "Kabul edildi") {
-        const socket = req.app.get("socket.io")
-        let obj = {
-            text: req.admin.message,
-            number: order.user_phone
-        }
-        socket.emit("verification-phone", obj)
     }
     if (req.body.status == "canceled") {
         for (var i = 0; i < order.order_products.length; i++) {

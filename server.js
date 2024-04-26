@@ -33,8 +33,8 @@ const options = {
 			},
 		],
 	},
-	apis: ["./docs/docs.yaml"],
-    // apis: ["./docs/public.yaml"]
+	// apis: ["./docs/docs.yaml"],
+    apis: ["./docs/public.yaml"]
 };
 const specs = swaggerJsDoc(options);
 // app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
