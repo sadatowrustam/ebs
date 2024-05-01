@@ -2,6 +2,53 @@ const fs = require('fs');
 const AppError = require('../../utils/appError');
 const catchAsync = require('../../utils/catchAsync');
 const { Categories, Subcategories, Products, Stock } = require('../../models');
+const { Op, where } = require('sequelize');
+
+exports.getAllSubcategories = catchAsync(async(req, res, next) => {
+    let id = req.params.id
+    const limit = req.query.limit || 20;
+    const offset = req.query.offset;
+    const sort = req.query
+    let { keyword } = req.query
+    let order
+    order = [
+        ["createdAt", "DESC"]
+    ]
+
+    var keywordsArray = ["%%"]
+    if (keyword && keyword != 'undefined') {
+        keywordsArray = []
+        keyword = keyword.toLowerCase();
+        keywordsArray.push('%' + keyword + '%');
+        keyword = '%' + capitalize(keyword) + '%';
+        keywordsArray.push(keyword);
+    }
+    const data = await Subcategories.findAll({
+        limit,
+        offset,
+        order,
+        where: {
+            categoryId:id,
+            name_tm: {
+                [Op.like]: {
+                    [Op.any]: keywordsArray,
+                },
+            },
+        },
+    });
+    const count = await Subcategories.count({
+        where: {
+            categoryId:id,
+            name_tm: {
+                [Op.like]: {
+                    [Op.any]: keywordsArray,
+                },
+            },
+        },
+    });
+    console.log(data);
+    return res.status(200).send({data,count});
+})
 
 exports.addSubcategory = catchAsync(async(req, res, next) => {
     const { categoryId, name_tm, name_ru,name_en } = req.body;
