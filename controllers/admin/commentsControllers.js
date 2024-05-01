@@ -2,7 +2,7 @@
 const fs = require('fs');
 const AppError = require('../../utils/appError');
 const catchAsync = require('../../utils/catchAsync');
-const { Comments,Services,Products } = require('../../models');
+const { Comments,Services,Products,Images } = require('../../models');
 
 exports.getAllMails=catchAsync(async(req,res,next)=>{
     const limit=req.query.limit || 10
@@ -69,10 +69,18 @@ exports.getMail=catchAsync(async(req,res,next)=>{
             {
                 model:Services,
                 as:"service",
+                include:{
+                    model:Images,
+                    as:"images"
+                }
             },
             {
                 model:Products,
                 as:"product",
+                include:{
+                    model:Images,
+                    as:"images"
+                }
             }
         ]
     })
