@@ -42,12 +42,20 @@ exports.getAllMails=catchAsync(async(req,res,next)=>{
             {
                 model:Services,
                 as:"service",
-                attributes:["name_tm"]
+                attributes:["name_tm"],
+                include:{
+                    model:Images,
+                    as:"images"
+                }
             },
             {
                 model:Products,
                 as:"product",
-                attributes:["name_tm"]
+                attributes:["name_tm"],
+                include:{
+                    model:Images,
+                    as:"images"
+                }
             }
         ]
     })
@@ -69,6 +77,11 @@ exports.getMail=catchAsync(async(req,res,next)=>{
         ]
     })
     return res.send(mail)
+})
+exports.answerComment=catchAsync(async(req,res,next)=>{
+   const comment=await Comments.findOne({where:{id:req.params.id}})
+   await comment.update({answer:req.body.answer}) 
+   return res.send(comment)
 })
 exports.deleteMail = catchAsync(async(req, res, next) => {
     const id = req.params.id;
