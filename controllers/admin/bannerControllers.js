@@ -5,6 +5,13 @@ const catchAsync = require('../../utils/catchAsync');
 const sharp = require("sharp")
 const { Banners, Products } = require('../../models');
 const {v4}=require("uuid")
+exports.getAllBanners=catchAsync(async(req,res)=>{
+    const limit=req.query.limit ||20
+    const offset=req.query.offset || 0
+    const data=await Banners.findAll({limit,offset})
+    const count=await Banners.count()
+    return res.send({data,count})
+})
 exports.addBanner = catchAsync(async(req, res, next) => {
     const newBanner = await Banners.create(req.body);
     return res.status(201).send(newBanner);

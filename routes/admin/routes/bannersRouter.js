@@ -3,13 +3,12 @@ const {
     addBanner,
     deleteBanner,
     editBanner,
+    getAllBanners
 } = require('../../../controllers/admin/bannerControllers');
 const {
-    getAllBanners,
     getBanner,
 } = require('../../../controllers/public/bannerControllers');
 const router = express.Router();
-
 router.get('/',  getAllBanners);
 router.post('/',  addBanner);
 router.get('/:id',  getBanner);
