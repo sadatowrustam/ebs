@@ -1,6 +1,5 @@
 const {Op}=require("sequelize")
 exports.getWhere=({min,max,sizes,category,colors,subcategoryId})=>{
-    console.log(sizes,colors)
  let where = []
     if (max && min == "") {
         let price = {

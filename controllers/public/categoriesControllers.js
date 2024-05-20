@@ -48,10 +48,6 @@ exports.getCategoryProducts = catchAsync(async(req, res, next) => {
         return next(new AppError('Category did not found with that ID', 404));
     const subcategories=await Subcategories.findAll({where:{categoryId:req.params.id}})
     const sizes=await Sizes.findAll({where:{categoryId:req.params.id}})
-    let where = {
-        categoryId: category.id,
-        isActive: true
-    }
     const limit = req.query.limit || 20;
     const offset = req.query.offset;
     const { sort} = req.query;
