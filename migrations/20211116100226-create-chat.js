@@ -9,13 +9,16 @@ module.exports = {
                 defaultValue: DataTypes.UUIDV4
             },
             chat: {
-                type: DataTypes.JSONB
+                type: DataTypes.TEXT
             },
             user: {
                 type: DataTypes.STRING
             },
             isRead: {
                 type: DataTypes.STRING
+            },
+            deleted: {
+                type: DataTypes.BOOLEAN
             },
             lastId: {
                 type: DataTypes.STRING

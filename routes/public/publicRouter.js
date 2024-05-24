@@ -1,10 +1,11 @@
 const express = require('express');
 const { sendMyMail } = require('../../controllers/public/contactusControllers');
-const { getAboutus } = require('../../controllers/admin/aboutUsController');
+const { getAboutus, sitemapXml } = require('../../controllers/admin/aboutUsController');
 const router = express.Router();
 
 router.post('/contact-us', sendMyMail);
 router.get("/about-us",getAboutus)
+router.get("/sitemap.xml",sitemapXml)
 router.use('/banners', require('./routes/bannersRouter'));
 router.use('/categories', require('./routes/categoriesRouter'));
 router.use('/subcategories', require('./routes/subcategoriesRouter'));
@@ -20,4 +21,5 @@ router.use("/sizes",require("./routes/sizesRouter"))
 router.use("/workers",require("./routes/workersRouter"))
 router.use("/awards",require("./routes/awardsRouter"))
 router.use("/clients",require("./routes/clientsRouter"))
+router.use("/chat",require("./routes/chatRouter"))
 module.exports = router;

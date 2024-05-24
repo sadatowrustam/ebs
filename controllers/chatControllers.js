@@ -7,8 +7,8 @@ module.exports = (io) => {
     const express = require("express");
 
     io.on('connection', async(socket) => {
+        console.log("connected")
         socket.on('new-user', async(name) => {
-
             await Chat.create({ user: socket.id })
             users[socket.id] = socket.id
             socket.emit("new-user-login", { id: socket.id })
@@ -16,7 +16,11 @@ module.exports = (io) => {
         socket.on("login", async(socketId) => {
             users[socket.id] = socket.id
             let messages = await Chat.findOne({ where: { user: socketId } })
-            await Chat.update({ lastId: socket.id }, { where: { user: socketId } })
+            if(!messages){
+                messages=await Chat.create({ user: socketId })
+            }else {
+                await Chat.update({ lastId: socket.id }, { where: { user: socketId } })
+            }
             socket.emit("all-messages", { messages: messages.chat })
         })
         socket.on("admin-login", async() => {
@@ -28,9 +32,10 @@ module.exports = (io) => {
             }
         })
         socket.on("admin-send", async(message) => {
-            let chat_id = message.chat_id
+            console.log(message)
+            let id = message.id
             let lastMessage = message.text
-            let messages = await Chat.findOne({ where: { chat_id } })
+            let messages = await Chat.findOne({ where: { id } })
             if (users[messages.lastId] != undefined) {
                 socket.broadcast.to(messages.lastId).emit('admin-message', { lastMessage })
             }
@@ -40,7 +45,7 @@ module.exports = (io) => {
                 message: lastMessage
             }
             allMessages.push(newMessage)
-            await Chat.update({ chat: allMessages }, { where: { chat_id } })
+            await Chat.update({ chat: allMessages }, { where: { id } })
             socket.emit("admin-success", {})
         })
         socket.on('send-chat-message', async(obj) => {

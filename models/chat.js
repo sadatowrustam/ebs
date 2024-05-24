@@ -20,7 +20,24 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4
         },
-        chat: DataTypes.JSONB,
+        chat: {
+            type:DataTypes.TEXT,
+            get() {
+                const data=this.getDataValue("chat")
+                console.log(data)
+                if(data==null || data=="null") {
+                    console.log(28)
+                    return []
+                }
+                else return JSON.parse(data)
+              },
+            set(value) {
+                console.log(value)
+                if(value!=null){
+                    this.setDataValue("chat",JSON.stringify(value))
+                }else this.setDataValue("chat",null)
+              }
+        },
         user: DataTypes.STRING,
         isRead: DataTypes.STRING,
         lastId: DataTypes.STRING,

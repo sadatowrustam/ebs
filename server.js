@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload")
 const { sequelize } = require("./models");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const expressSitemapXml=require("express-sitemap-xml")
 const limiter = require('express-rate-limit')({
     max: 1000,
     windowMs: 1000,
@@ -37,6 +38,7 @@ const options = {
     apis: ["./docs/public.yaml"]
 };
 const specs = swaggerJsDoc(options);
+
 // app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use("/public-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(require('morgan')('dev'));
