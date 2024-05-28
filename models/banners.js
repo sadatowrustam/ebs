@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         link: DataTypes.STRING,
         image: DataTypes.STRING,
+        image_mobile: {
+            type: DataTypes.STRING
+        },
     }, {
         sequelize,
         tableName: "banners",

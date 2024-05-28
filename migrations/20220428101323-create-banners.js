@@ -14,6 +14,9 @@ module.exports = {
             image: {
                 type: DataTypes.STRING
             },
+            image_mobile: {
+                type: DataTypes.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: DataTypes.DATE
