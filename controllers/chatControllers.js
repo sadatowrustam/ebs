@@ -16,8 +16,7 @@ module.exports = (io) => {
         socket.on("login", async(socketId) => {
             users[socket.id] = socket.id
             let messages = await Chat.findOne({ where: { user: socketId } })
-            if(!messages){
-                messages=await Chat.create({ user: socketId })
+            if(!messages){sdxc
             }else {
                 await Chat.update({ lastId: socket.id }, { where: { user: socketId } })
             }

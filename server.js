@@ -54,7 +54,7 @@ app.all('*', (req, res, next) => {
 });
 app.use(require('./controllers/errorController'));
 app.use(require('./controllers/dateController'))
-const PORT = 8000;
+const PORT = 5020;
 const server = app.listen(PORT, async() => {
     await sequelize.authenticate();
     console.log(`Connected to DB and listening on port ${PORT}...`);

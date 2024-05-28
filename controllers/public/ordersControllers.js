@@ -70,6 +70,8 @@ exports.addMyOrders = catchAsync(async(req, res, next) => {
             ...other_details[i]
         });
     }
+    const socket = req.app.get("socket.io")
+    socket.emit("admin-order")
     return res.status(200).send(order)
 });
 exports.check_phone = catchAsync(async(req, res, next) => {
@@ -90,32 +92,3 @@ exports.check_phone = catchAsync(async(req, res, next) => {
         return res.status(200).send({ status: 0, code: number })
     } else next()
 })
-async function returnGift(total_price) {
-    let maximum = 0
-    let giftProduct
-    const giftcards = await Gifts.findAll({
-        where: { isActive: true },
-        order: [
-            ["price", "ASC"]
-        ]
-    })
-    for (const giftcard of giftcards) {
-        if (giftcard.price > maximum && giftcard.price < total_price || giftcard.price == total_price) {
-            maximum = giftcard.price
-            giftProduct = giftcard
-        }
-    }
-    return giftProduct
-}
-
-function takeDate() {
-    const date = new Date()
-    let time = date.getMonth() + "." + date.getDay() + "." + date.getHours() + "." + date.getMinutes()
-
-    return time
-}
-
-function lessThan(number) {
-    if (number < 10) return "0" + number
-    return number
-}
