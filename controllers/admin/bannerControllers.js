@@ -44,7 +44,7 @@ exports.deleteBanner = catchAsync(async(req, res, next) => {
 
     if (banner.image) {
         fs.unlink(`static/${banner.image}.webp`, function(err) {
-            if (err) return next(new AppError(err, 500))
+            if (err) console.log(err)
         });
     }
 

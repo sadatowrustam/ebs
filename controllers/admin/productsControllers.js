@@ -19,6 +19,7 @@ const {
     Subcategories
 } = require('../../models');
 const { where } = require('sequelize');
+const resize = require('sharp/lib/resize');
 const include = [{
     model: Images,
     as: "images",
@@ -217,8 +218,12 @@ exports.uploadProductImage = catchAsync(async(req, res, next) => {
         const id = v4()
         const image = `${id}.webp`;
         const photo = one_image.data
-        let buffer = await sharp(photo).webp().toBuffer()
+        const buffer = await sharp(photo).webp().toBuffer()
+        const buffer_small=await sharp(photo).webp().resize({width:500,height:500})
+        const buffer_low=await sharp(photo).webp().resize({width:200,height:200})
         await sharp(buffer).toFile(`static/${image}`);
+        await sharp(buffer_small).toFile(`static/${image}_webp`);
+        await sharp(buffer_low).toFile(`static/${image}`);
         let newImage = await Images.create({ image, id })
         images.push(id)
     }
