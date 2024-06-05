@@ -59,7 +59,8 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
         },
-        image:DataTypes.STRING
+        image:DataTypes.STRING,
+        order:DataTypes.INTEGER
     }, {
         sequelize,
         tableName: "categories",

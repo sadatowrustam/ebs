@@ -29,13 +29,15 @@ const include = [{
 ]
 exports.getAllCategories = catchAsync(async(req, res) => {
     let order = [
-        ["id", "DESC"]
+        ["order", "ASC"],
+        ["updatedAt","DESC"]
     ]
     const categories = await Categories.findAll({
         order,
         include: {
             model: Subcategories,
             as: 'subcategories',
+            order:["createdAt","DESC"]
         }
     });
     return res.status(200).send(categories);

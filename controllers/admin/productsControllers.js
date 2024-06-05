@@ -216,14 +216,15 @@ exports.uploadProductImage = catchAsync(async(req, res, next) => {
     req.files = intoArray(req.files)
     for (const one_image of req.files) {
         const id = v4()
-        const image = `${id}.webp`;
+        let image = `${id}`;
         const photo = one_image.data
         const buffer = await sharp(photo).webp().toBuffer()
-        const buffer_small=await sharp(photo).webp().resize({width:500,height:500})
-        const buffer_low=await sharp(photo).webp().resize({width:200,height:200})
-        await sharp(buffer).toFile(`static/${image}`);
-        await sharp(buffer_small).toFile(`static/${image}_webp`);
-        await sharp(buffer_low).toFile(`static/${image}`);
+        const buffer_small=await sharp(photo).webp().resize(500,500).toBuffer()
+        const buffer_low=await sharp(photo).webp().resize(200,200).toBuffer()
+        await sharp(buffer).toFile(`static/${image}.webp`);
+        await sharp(buffer_small).toFile(`static/${image}_medium.webp`);
+        await sharp(buffer_low).toFile(`static/${image}_low.webp`);
+        image+=".webp"
         let newImage = await Images.create({ image, id })
         images.push(id)
     }
