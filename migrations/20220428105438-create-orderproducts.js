@@ -40,6 +40,9 @@ module.exports = {
             colorId:{
                 type:DataTypes.STRING
             },
+            image:{
+                type:DataTypes.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: DataTypes.DATE,

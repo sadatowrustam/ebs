@@ -46,7 +46,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         type:{
             type:DataTypes.STRING
-        }
+        },
+        image:{
+            type:DataTypes.STRING
+        },
     }, {
         sequelize,
         tableName: 'orderproducts',

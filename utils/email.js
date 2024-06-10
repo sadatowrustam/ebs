@@ -15,7 +15,7 @@ exports.sendEmail = async(options) => {
         from: `Contact-Us <rustamsadatov0@gmail.com>`,
         to: admin.email,
         subject: 'Biri "EBS" administratsiýasy bilen habarlaşmak isleýär',
-        text: `ADY: ${options.name},\n\n EMAIL: ${options.email}, \n TELEFON: ${options.phone},\n\nHATY: ${options.text}`,
+        text: `ADY: ${options.name},\n\n EMAIL: ${options.email}, \n TELEFON: ${options.phone},\nHATY: ${options.text}\ncity: ${options.city } `,
     };
     await transporter.sendMail(mailOptions);
 };

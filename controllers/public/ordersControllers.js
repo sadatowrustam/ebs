@@ -9,14 +9,15 @@ exports.addMyOrders = catchAsync(async(req, res, next) => {
         user_phone,
         note,
         user_name,
-        address
+        address,
+        mail
     } = req.body;
-    console.log(order_products)
     let status = "Garashylyar"
     let checkedProducts = [];
     let total_price = 0;
     let total_quantity = 0;
     let other_details=[]
+    let isRegistered=false
     if (order_products)
         for (var i = 0; i < order_products.length; i++) {
             let product
@@ -42,12 +43,14 @@ exports.addMyOrders = catchAsync(async(req, res, next) => {
             if(order_products[i].sizeId!=null){
                 data.sizeId=order_products[i].sizeId
             }
+            data.image=order_products[i].image
             other_details.push(data)
             total_quantity = total_quantity + Number(order_products[i].quantity);
             checkedProducts.push(product);
             total_price =
                 total_price + product.price * Number(order_products[i].quantity);
         }
+    if (mail) isRegistered=true
     const order = await Orders.create({
         total_price,
         user_phone,
@@ -55,7 +58,8 @@ exports.addMyOrders = catchAsync(async(req, res, next) => {
         status,
         total_quantity,
         user_name,
-        address
+        address,
+        isRegistered
     });
     for (var i = 0; i < checkedProducts.length; i++) {
         const order_product=await Orderproducts.create({
@@ -63,11 +67,12 @@ exports.addMyOrders = catchAsync(async(req, res, next) => {
             productId: order_products[i].productId,
             quantity: order_products[i].quantity,
             price: checkedProducts[i].price,
+            image:checkedProducts[i].image,
             total_price: Number(
                 checkedProducts[i].price * order_products[i].quantity
             ),
             type:order_products[i].type,
-            ...other_details[i]
+            ...other_details[i],
         });
     }
     const socket = req.app.get("socket.io")
@@ -75,7 +80,6 @@ exports.addMyOrders = catchAsync(async(req, res, next) => {
     return res.status(200).send(order)
 });
 exports.check_phone = catchAsync(async(req, res, next) => {
-    console.log(128)
     if (req.body.check_phone) {
         const order = await Orders.findOne({ where: { user_phone: req.body.check_phone } })
         if (order) return res.status(200).send({ status: 1 })

@@ -78,9 +78,6 @@ exports.getOrderProducts = catchAsync(async(req, res, next) => {
             console.log(78)
             var product = await Products.findOne({
                 where: { id: order.order_products[i].productId },
-                include: [
-                    { model: Images, as: "images" },
-                ],
                 order: [
                     ["images", "id", "DESC"]
                 ]
@@ -122,7 +119,7 @@ exports.getOrderProducts = catchAsync(async(req, res, next) => {
             price,
             // product_code,
             order_product_id: order.order_products[i].id,
-            image: product.images[0].image,
+            image: order.order_products[i].image,
             quantity: order.order_products[i].quantity,
             order_price: order.order_products[i].price,
             total_price: order.order_products[i].total_price,
@@ -135,11 +132,6 @@ exports.getOrderProducts = catchAsync(async(req, res, next) => {
             const size=await Sizes.findOne({where:{id:order.order_products[i].sizeId}})
             obj.size=size
         }
-        if(order.order_products[i].colorId!=null){
-            const color=await Colors.findOne({where:{id:order.order_products[i].colorId}})
-            obj.color=color
-        }
-        orderProducts.push(obj);
     }
     const order1=await Orders.findOne({where:{id:req.params.id}})
     return res.status(201).send({ order:order1, orderProducts });
