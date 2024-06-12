@@ -1,4 +1,4 @@
-const Op = require('sequelize').Op;
+
 const excel = require("excel4node")
 const AppError = require('../../utils/appError');
 const catchAsync = require('../../utils/catchAsync');
@@ -75,23 +75,14 @@ exports.getOrderProducts = catchAsync(async(req, res, next) => {
     for (var i = 0; i < order.order_products.length; i++) {
         console.log(order.order_products[i].type)
         if(order.order_products[i].type=="product"){
-            console.log(78)
+
             var product = await Products.findOne({
                 where: { id: order.order_products[i].productId },
-                order: [
-                    ["images", "id", "DESC"]
-                ]
             });
         }
         else{
             var product=await Services.findOne({
                 where: { id: order.order_products[i].serviceId },
-                include: [
-                    { model: Images, as: "images" },
-                ],
-                order: [
-                    ["images", "id", "DESC"]
-                ]
             })
         }
         if (!product)
@@ -132,6 +123,7 @@ exports.getOrderProducts = catchAsync(async(req, res, next) => {
             const size=await Sizes.findOne({where:{id:order.order_products[i].sizeId}})
             obj.size=size
         }
+        orderProducts.push(obj)
     }
     const order1=await Orders.findOne({where:{id:req.params.id}})
     return res.status(201).send({ order:order1, orderProducts });
