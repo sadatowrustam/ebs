@@ -23,6 +23,15 @@ module.exports = {
             image: {
                 type: DataTypes.STRING
             },
+            body_tm:{
+                type:DataTypes.STRING
+            },
+            body_en:{
+                type:DataTypes.STRING
+            },
+            body_ru:{
+                type:DataTypes.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: DataTypes.DATE

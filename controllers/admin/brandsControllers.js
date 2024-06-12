@@ -80,14 +80,14 @@ exports.editBrand = catchAsync(async(req, res, next) => {
     if (!brand)
         return next(new AppError('Brand did not found with that ID', 404));
 
-    const { name,image } = req.body;
+    const { name,image,body_tm,body_ru,body_en } = req.body;
     if (
         typeof name !== 'string' ||
         name.length < 1
     )
         return next(new AppError('Invalid Credentials', 400));
 
-    await brand.update({ name,image });
+    await brand.update({ name,image,body_en,body_ru,body_tm });
 
     return res.status(200).send(brand);
 });
