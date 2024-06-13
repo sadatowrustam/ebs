@@ -22,4 +22,7 @@ router.use("/workers",require("./routes/workersRouter"))
 router.use("/awards",require("./routes/awardsRouter"))
 router.use("/clients",require("./routes/clientsRouter"))
 router.use("/chat",require("./routes/chatRouter"))
+router.use("/projects",require("./routes/projectsRouter"))
+router.use("/trusting",require("./routes/trustingRouter"))
+router.use("/our-works",require("./routes/ourWorksRouter"))
 module.exports = router;

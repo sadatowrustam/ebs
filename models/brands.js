@@ -33,9 +33,9 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         image: DataTypes.STRING,
-        body_tm:DataTypes.STRING,
-        body_ru:DataTypes.STRING,
-        body_en:DataTypes.STRING,
+        body_tm:DataTypes.TEXT,
+        body_ru:DataTypes.TEXT,
+        body_en:DataTypes.TEXT,
     }, {
         sequelize,
         tableName: "brands",

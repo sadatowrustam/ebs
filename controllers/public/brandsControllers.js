@@ -55,7 +55,7 @@ exports.getBrandProducts = catchAsync(async(req, res, next) => {
         ],
     });
 
-    return res.status(200).send(products);
+    return res.status(200).send({brand,products});
 });
 const capitalize = function(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

@@ -100,9 +100,6 @@ exports.addProduct = catchAsync(async(req, res, next) => {
     req.body.colorIds=req.body.colors
     const newProduct = await Products.create(req.body);
     await Images.update({productId:newProduct.id},{where:{id:{[Op.in]:req.body.images}}})
-    for (const color of req.body.colors){
-        await Productcolor.create({productId:newProduct.id,colorId:color})
-    }
     for (const size of req.body.sizes){
         await Productsizes.create({productId:newProduct.id,sizeId:size})
     }

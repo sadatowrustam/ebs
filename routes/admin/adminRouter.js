@@ -33,4 +33,8 @@ router.use("/achievements",require("./routes/achievementsRouter"))
 router.use("/mails",require("./routes/mailsRouter"))
 router.use("/chat",require("./routes/chatRouter"))
 router.use("/comments",require("./routes/commentsRouter"))
+router.use("/projects",require("./routes/projectsRouter"))
+router.use("/trusting",require("./routes/trustingRouter"))
+router.use("/our-works",require("./routes/ourWorksRouter"))
+
 module.exports = router

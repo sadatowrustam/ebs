@@ -24,13 +24,13 @@ module.exports = {
                 type: DataTypes.STRING
             },
             body_tm:{
-                type:DataTypes.STRING
+                type:DataTypes.TEXT
             },
             body_en:{
-                type:DataTypes.STRING
+                type:DataTypes.TEXT
             },
             body_ru:{
-                type:DataTypes.STRING
+                type:DataTypes.TEXT
             },
             createdAt: {
                 allowNull: false,
