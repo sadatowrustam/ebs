@@ -31,6 +31,9 @@ module.exports = {
         type: Sequelize.REAL,
         defaultValue: 0
       },
+      showFooter:{
+        type:Sequelize.BOOLEAN
+      },
       rating_count: {
           type: Sequelize.INTEGER,
           defaultValue: 0

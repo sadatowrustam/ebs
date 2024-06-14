@@ -48,6 +48,9 @@ module.exports = (sequelize, DataTypes) => {
     price:{
       type:DataTypes.REAL
     },
+    showFooter:{
+      type:DataTypes.BOOLEAN
+    },
     servicecategoryId:DataTypes.INTEGER
   }, {
     sequelize,

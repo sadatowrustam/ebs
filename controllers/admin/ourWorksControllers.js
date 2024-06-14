@@ -3,7 +3,7 @@ const fs = require('fs');
 const AppError = require('../../utils/appError');
 const catchAsync = require('../../utils/catchAsync');
 const {v4}=require("uuid")
-const { OurkWorks,Images } = require('../../models');
+const { OurWorks,Images } = require('../../models');
 const { Op } = require('sequelize');
 const capitalize = function(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -76,7 +76,7 @@ exports.getAllBlogs=catchAsync(async(req,res,next)=>{
     }
     const limit=req.query.limit || 20
     const offset=req.query.offset || 0
-    const data=await OurkWorks.findAll({
+    const data=await OurWorks.findAll({
         where,
         order:[["updatedAt","DESC"]],
         limit,
@@ -86,25 +86,25 @@ exports.getAllBlogs=catchAsync(async(req,res,next)=>{
             as:"images"
         }
     })
-    const count=await OurkWorks.count({where})
+    const count=await OurWorks.count({where})
     return res.send({data,count})
 })
 exports.addBlogs=catchAsync(async(req,res,next)=>{
     console.log(req.body)
-    const blogs=await OurkWorks.create(req.body);
+    const blogs=await OurWorks.create(req.body);
     await Images.update({ourworkId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
     return res.status(201).send(blogs)
 })
 exports.editBlogs=catchAsync(async(req,res,next)=>{
-    const blogs=await OurkWorks.findOne({where:{id:req.params.id}})
-    if(!blogs) return next(new AppError("OurkWorks not found",404))
+    const blogs=await OurWorks.findOne({where:{id:req.params.id}})
+    if(!blogs) return next(new AppError("OurWorks not found",404))
     await blogs.update(req.body)
     await Images.update({ourworkId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
     return res.send(blogs)
 })
 exports.deleteBlogs=catchAsync(async(req,res,next)=>{
-    const blogs=await OurkWorks.findOne({where:{id:req.params.id}})
-    if(!blogs) return next(new AppError("OurkWorks not found",404))
+    const blogs=await OurWorks.findOne({where:{id:req.params.id}})
+    if(!blogs) return next(new AppError("OurWorks not found",404))
     await blogs.destroy()
     return res.send("Success")
 })

@@ -15,6 +15,10 @@ exports.getService = catchAsync(async(req, res, next) => {
     const recommendations=await Services.findAll({where:{id:{[Op.ne]:oneProduct.id},servicecategoryId:req.params.id},include:{model:Images,as:"images"}})
     return res.status(200).send({oneProduct,recommendations})
 })
+exports.getFooterService=catchAsync(async(req,res,next)=>{
+    const services=await Services.findAll({where:{showFooter:true}})
+    return res.send(services)
+})
 exports.setRating = catchAsync(async(req, res, next) => {
     const service = await Services.findOne({ where: { id: req.body.serviceId } })
     if (!service) {
