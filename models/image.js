@@ -5,12 +5,14 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Image extends Model {
 
-        static associate({ Products,Services,Projects,OurWorks,Trusting }) {
+        static associate({ Products,Services,Projects,OurWorks,Trusting,Footer }) {
             this.belongsTo(Products, { foreignKey: "productId", as: "images" })
             // this.belongsTo(Services, { foreignKey: "productId", as: "images" })
             this.belongsTo(Projects,{as:"project",foreignKey:"projectId"})
             this.belongsTo(OurWorks,{as:"ourwork",foreignKey:"ourworkId"})
             this.belongsTo(Trusting,{as:"trusting",foreignKey:"trustingId"})
+            this.belongsTo(Footer,{as:"footer ",foreignKey:"footerId"})
+
         }
     }
     Image.init({
@@ -25,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         projectId: DataTypes.INTEGER,
         ourworkId: DataTypes.INTEGER,
         trustingId: DataTypes.INTEGER,
+        footerId: DataTypes.INTEGER,
         image: DataTypes.STRING
     }, {
         sequelize,
