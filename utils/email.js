@@ -7,8 +7,8 @@ exports.sendEmail = async(options) => {
         port: 465,
         secure: true,
         auth: {
-            user: 'rustamsadatov0@gmail.com',
-            pass: 'smvamzeedrfahnkj',
+            user: 'mailsendergeekspace@gmail.com',
+            pass: 'benaunwmmalcbmqc',
         },
     });
     const mailOptions = {

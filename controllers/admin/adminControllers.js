@@ -80,7 +80,7 @@ exports.sendMe = catchAsync(async(req, res, next) => {
     return res.status(200).send(req.admin)
 })
 exports.updateMe = catchAsync(async(req, res, next) => {
-    const { username, password } = req.body;
+    const { username, password,email } = req.body;
     if (!username) {
         return next(new AppError('Please provide username and  password', 400));
     }
@@ -95,6 +95,7 @@ exports.updateMe = catchAsync(async(req, res, next) => {
 
     await admin.update({
         username,
+        email
     });
 
     createSendToken(admin, 200, res);
