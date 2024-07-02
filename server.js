@@ -49,6 +49,9 @@ app.use(express.json({ limit: "50mb" }))
 app.use(express.static(`${__dirname}/static`));
 app.use('/api/admin', require('./routes/admin/adminRouter'));
 app.use('/api/public', require('./routes/public/publicRouter'));
+app.get("/api/images/:image",(req,res)=>{
+    res.sendFile(req.params.image,{root:"./public"})
+  })
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
@@ -60,9 +63,7 @@ const server = app.listen(PORT, async() => {
     console.log(`Connected to DB and listening on port ${PORT}...`);
 });
 const socket = require("socket.io")(server, { cors: { origin: "*" } })
-app.get("/api/images/:image",(req,res)=>{
-    res.sendFile(req.params.image,{root:"./public"})
-  })
+
 app.use(require("./controllers/chatControllers")(socket))
 app.set("socket.io", socket)
 process.on('unhandledRejection', (err) => {
