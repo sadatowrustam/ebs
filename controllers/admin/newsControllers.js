@@ -3,7 +3,7 @@ const fs = require('fs');
 const AppError = require('../../utils/appError');
 const catchAsync = require('../../utils/catchAsync');
 const {v4}=require("uuid")
-const { News } = require('../../models');
+const { News,Images } = require('../../models');
 const { Op } = require('sequelize');
 const capitalize = function(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -81,19 +81,25 @@ exports.getAllBlogs=catchAsync(async(req,res,next)=>{
         order:[["updatedAt","DESC"]],
         limit,
         offset,
+        include:{
+            model:Images,
+            as:"images"
+        }
     })
     const count=await News.count({where})
     return res.send({data,count})
 })
 exports.addBlogs=catchAsync(async(req,res,next)=>{
-    console.log(req.body)
     const blogs=await News.create(req.body);
+    await Images.update({newsId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
     return res.status(201).send(blogs)
 })
 exports.editBlogs=catchAsync(async(req,res,next)=>{
     const blogs=await News.findOne({where:{id:req.params.id}})
     if(!blogs) return next(new AppError("News not found",404))
     await blogs.update(req.body)
+    console.log(req.body.images)
+    await Images.update({newsId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
     return res.send(blogs)
 })
 exports.deleteBlogs=catchAsync(async(req,res,next)=>{
