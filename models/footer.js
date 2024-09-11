@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Images}) {
       // define association here
-      this.hasMany(Images, { foreignKey: "projectId", as: "images" })
+      this.hasMany(Images, { foreignKey: "footerId", as: "images" })
 
     }
   }
