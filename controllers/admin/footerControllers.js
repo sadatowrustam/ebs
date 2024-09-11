@@ -92,7 +92,7 @@ exports.getAllBlogs=catchAsync(async(req,res,next)=>{
 exports.addBlogs=catchAsync(async(req,res,next)=>{
     console.log(req.body)
     const blogs=await Footer.create(req.body);
-    await Images.update({projectId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
+    await Images.update({footerId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
     return res.status(201).send(blogs)
 })
 exports.editBlogs=catchAsync(async(req,res,next)=>{
@@ -101,7 +101,7 @@ exports.editBlogs=catchAsync(async(req,res,next)=>{
     console.log(req.body)
     await blogs.update(req.body)
     if(req.body.images){
-        await Images.update({projectId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
+        await Images.update({footerId:blogs.id},{where:{id:{[Op.in]:req.body.images}}})
     }
     return res.send(blogs)
 })
