@@ -1,5 +1,6 @@
 module.exports = (io) => {
-    const { Chat } = require("../models")
+    const { Chat, Admin } = require("../models")
+    const nodemailer=require("nodemailer")
     let users = {}
     let adminOnline = false
     let adminSocket
@@ -66,7 +67,23 @@ module.exports = (io) => {
                 isNewMessage = false
             }
             await Chat.update({ chat: allMessages, lastId: socket.id, isRead: "false" }, { where: { id: obj.id } })
-
+            const admin = await Admin.findOne()
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                port: 465,
+                secure: true,
+                auth: {
+                    user: 'mailsendergeekspace@gmail.com',
+                    pass: 'benaunwmmalcbmqc',
+                },
+            });
+            const mailOptions = {
+                from: `Contact-Us <mailsendergeekspace@gmail.com>`,
+                to: admin.email,
+                subject: 'Biri "EBS" administratsiýasy bilen habarlaşmak isleýär',
+                text: `ADY: ${options.name},\n\n EMAIL: ${options.email}, \n TELEFON: ${options.phone},\nHATY: ${options.text}\ncity: ${options.city } `,
+            };
+            await transporter.sendMail(mailOptions);
 
         })
         socket.on('disconnect', () => {
